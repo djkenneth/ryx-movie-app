@@ -8,7 +8,7 @@
       show-arrows-on-hover
     >
       <v-carousel-item
-        v-for="(item, i) in getPopularTvShows"
+        v-for="(item, i) in getPopularTvShows.slice(0, 10)"
         :key="i"
         eager
         gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
@@ -66,25 +66,25 @@
       <ShowCase
         class="my-13"
         type="tv"
-        :results="getPopularTvShows"
+        :results="getPopularTvShows.slice(0, 15)"
         title="Popular"
       />
       <ShowCase
         class="my-13"
         type="tv"
-        :results="getAiringTodayTvShows"
+        :results="getAiringTodayTvShows.slice(0, 15)"
         title="Airing Today"
       />
       <ShowCase
         class="my-13"
         type="tv"
-        :results="getOnTheAirTvShows"
+        :results="getOnTheAirTvShows.slice(0, 15)"
         title="On The Air"
       />
       <ShowCase
         class="my-13"
         type="tv"
-        :results="getTopRatedTvShows"
+        :results="getTopRatedTvShows.slice(0, 15)"
         title="Top Rated"
       />
     </v-container>

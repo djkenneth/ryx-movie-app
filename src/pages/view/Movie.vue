@@ -188,10 +188,6 @@ export default {
       getMovieInfo: "movie/getMovieInfo",
     }),
   },
-
-  // created() {
-  //   this.$store.dispatch("movie/fetchMovie", this.$route.params.id);
-  // },
 };
 </script>
 

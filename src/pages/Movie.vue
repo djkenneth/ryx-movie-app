@@ -8,7 +8,7 @@
       show-arrows-on-hover
     >
       <v-carousel-item
-        v-for="(item, i) in getUpcomingMovies"
+        v-for="(item, i) in getUpcomingMovies.slice(0, 10)"
         :key="i"
         eager
         gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
@@ -67,25 +67,25 @@
       <ShowCase
         class="my-13"
         type="movie"
-        :results="getPopularMovies"
+        :results="getPopularMovies.slice(0, 15)"
         title="Popular"
       />
       <ShowCase
         class="my-13"
         type="movie"
-        :results="getUpcomingMovies"
+        :results="getUpcomingMovies.slice(0, 15)"
         title="Upcoming"
       />
       <ShowCase
         class="my-13"
         type="movie"
-        :results="getNowPlayingMovies"
+        :results="getNowPlayingMovies.slice(0, 15)"
         title="Now Playing"
       />
       <ShowCase
         class="my-13"
         type="movie"
-        :results="getTopRatedMovies"
+        :results="getTopRatedMovies.slice(0, 15)"
         title="Top Rated"
       />
     </v-container>
