@@ -22,7 +22,7 @@
             : require('@/assets/no-image-available.jpg')
         "
       >
-        <v-btn
+        <!-- <v-btn
           v-if="liked.find((like) => like.id === item.id) ? true : false"
           @click.stop="removeStorage(item.id)"
           icon
@@ -35,7 +35,7 @@
         </v-btn>
         <v-btn v-else @click.stop="addStorage(item)" icon absolute top right>
           <v-icon size="35">mdi-heart-outline</v-icon>
-        </v-btn>
+        </v-btn> -->
         <span class="card-vote" v-if="hover && item.vote_average">{{
           item.vote_average
         }}</span>

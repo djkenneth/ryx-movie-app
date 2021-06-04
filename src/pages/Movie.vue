@@ -38,7 +38,7 @@
                     @click="viewMovie(item)"
                     >VIEW MORE</v-btn
                   >
-                  <v-btn
+                  <!-- <v-btn
                     v-if="
                       liked.find((like) => like.id === item.id) ? true : false
                     "
@@ -55,7 +55,7 @@
                     class="rounded-icon"
                   >
                     <v-icon size="25">mdi-heart-outline</v-icon>
-                  </v-btn>
+                  </v-btn> -->
                 </div>
               </v-col>
             </v-row>
