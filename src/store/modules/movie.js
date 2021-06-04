@@ -34,7 +34,7 @@ export default {
                 } else {
                     const tmdb = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${process.env.VUE_APP_TMDB_API_KEY}&append_to_response=videos,images,credits,reviews,similar,recommendations,keywords,external_ids`)
 
-                    const imdb = await axios.get(`http://www.omdbapi.com/?i=${tmdb.data.imdb_id}&apikey=${process.env.VUE_APP_OMBD_API_KEY}`)
+                    const imdb = await axios.get(`https://www.omdbapi.com/?i=${tmdb.data.imdb_id}&apikey=${process.env.VUE_APP_OMBD_API_KEY}`)
 
                     const { Metascore, imdbVotes, imdbRating, Rated, Ratings } = await imdb.data;
 
@@ -43,7 +43,6 @@ export default {
                     tmdb.data.imdb_votes = imdbVotes;
                     tmdb.data.rated = Rated;
                     tmdb.data.other_rate = Ratings;
-
                     commit("SET_MOVIE_INFO", await tmdb.data)
                 }
             } catch (err) {
