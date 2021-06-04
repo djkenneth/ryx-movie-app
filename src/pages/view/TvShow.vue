@@ -61,7 +61,7 @@
             <v-btn light color="cyan accent-2" rounded x-large class="px-7"
               >Watch trailer <v-icon size="30">mdi-menu-right</v-icon></v-btn
             >
-            <v-btn
+            <!-- <v-btn
               v-if="
                 liked.find((like) => like.id === getTVShowInfo.id)
                   ? true
@@ -80,7 +80,7 @@
               class="rounded-icon white--text"
             >
               <v-icon size="25">mdi-heart-outline</v-icon>
-            </v-btn>
+            </v-btn> -->
           </v-col>
         </v-row>
       </v-container>
