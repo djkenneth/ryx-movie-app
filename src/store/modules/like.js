@@ -42,11 +42,22 @@ export default {
     },
     getters: {
         getMovieLike: state => {
-            return state.liked.filter(item => item.type === 'movie')
+            if (state.liked != null && state.liked.some(item => item.type === 'movie')) {
+                const movieLike = state.liked.filter(item => item.type === 'movie');
+                return movieLike;
+            } else {
+                return []
+            }
+
         },
 
         getTvLike: state => {
-            return state.liked.filter(item => item.type === 'tv')
+            if (state.liked != null && state.liked.some(item => item.type === 'tv')) {
+                const tvshowLike = state.liked.filter(item => item.type === 'tv');
+                return tvshowLike;
+            } else {
+                return []
+            }
         }
     }
 }
