@@ -22,9 +22,7 @@
             : require('@/assets/no-image-available.jpg')
         "
       >
-        <template
-          v-if="liked.find((like) => like.id === item.id) ? true : false"
-        >
+        <template v-if="isLike">
           <v-btn
             @click.stop="removeStorage(item.id)"
             icon
@@ -75,6 +73,18 @@ export default {
     ...mapGetters({
       getMovieGenres: "getMovieGenres",
     }),
+
+    isLike() {
+      // liked.find((like) => like.id === item.id) ? true : false
+      if (this.liked != null) {
+        if (this.liked.find((like) => like.id === this.item.id)) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    },
   },
 
   methods: {
