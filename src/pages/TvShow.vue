@@ -35,26 +35,23 @@
                     rounded
                     x-large
                     class="px-13"
+                    @click="view(item)"
                     >VIEW MORE</v-btn
                   >
-                  <!-- <v-btn
-                    v-if="
-                      liked.find((like) => like.id === item.id) ? true : false
-                    "
-                    @click="removeStorage(item.id)"
-                    icon
-                    class="rounded-icon-bg-red"
-                  >
-                    <v-icon size="25">mdi-heart</v-icon>
-                  </v-btn>
-                  <v-btn
-                    v-else
-                    @click="addStorage(item)"
-                    icon
-                    class="rounded-icon"
-                  >
-                    <v-icon size="25">mdi-heart-outline</v-icon>
-                  </v-btn> -->
+                  <template v-if="isLike(item.id)">
+                    <v-btn
+                      @click="removeStorage(item.id)"
+                      icon
+                      class="rounded-icon-bg-red"
+                    >
+                      <v-icon size="25">mdi-heart</v-icon>
+                    </v-btn>
+                  </template>
+                  <template v-else>
+                    <v-btn @click="addStorage(item)" icon class="rounded-icon">
+                      <v-icon size="25">mdi-heart-outline</v-icon>
+                    </v-btn>
+                  </template>
                 </div>
               </v-col>
             </v-row>
@@ -110,13 +107,25 @@ export default {
   // },
 
   methods: {
+    isLike(id) {
+      if (this.liked != null) {
+        if (this.liked.find((item) => item.id === id)) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    },
+
     addStorage(item) {
       this.$store.dispatch("like/addStorage", {
         id: item.id,
         genre_ids: item.genre_ids,
         poster_path: item.poster_path,
-        title: item.title,
+        name: item.name,
         vote_average: item.vote_average,
+        first_air_date: item.first_air_date.substring(0, 4),
         type: "tv",
       });
       this.$store.commit("like/GET_STORAGE");
@@ -125,6 +134,13 @@ export default {
     removeStorage(id) {
       this.$store.dispatch("like/removeStorage", id);
       this.$store.commit("like/GET_STORAGE");
+    },
+
+    view(item) {
+      this.$router.push({
+        name: "view-tv",
+        params: { name: item.name, id: item.id },
+      });
     },
   },
 

@@ -22,20 +22,25 @@
             : require('@/assets/no-image-available.jpg')
         "
       >
-        <!-- <v-btn
+        <template
           v-if="liked.find((like) => like.id === item.id) ? true : false"
-          @click="removeStorage(item.id)"
-          icon
-          absolute
-          top
-          right
-          color="red"
         >
-          <v-icon size="35">mdi-heart</v-icon>
-        </v-btn>
-        <v-btn v-else @click="addStorage(item)" icon absolute top right>
-          <v-icon size="35">mdi-heart-outline</v-icon>
-        </v-btn> -->
+          <v-btn
+            @click.stop="removeStorage(item.id)"
+            icon
+            absolute
+            top
+            right
+            color="red"
+          >
+            <v-icon size="35">mdi-heart</v-icon>
+          </v-btn>
+        </template>
+        <template v-else>
+          <v-btn @click.stop="addStorage(item)" icon absolute top right>
+            <v-icon size="35">mdi-heart-outline</v-icon>
+          </v-btn>
+        </template>
         <span class="card-vote" v-if="hover && item.vote_average">{{
           item.vote_average
         }}</span>
@@ -44,7 +49,7 @@
         </v-card-title>
         <v-card-text v-if="hover && item.genre_ids" class="py-0 card-genre">
           <span v-for="(genre, i) in item.genre_ids" :key="i">
-            {{ getGenreId(genre) }}
+            {{ getGenreId(genre).name }}
           </span>
         </v-card-text>
         <v-card-subtitle v-if="item.first_air_date" class="pt-0">{{
@@ -71,14 +76,24 @@ export default {
     ...mapGetters({
       getTvGenres: "getTvGenres",
     }),
+
+    isLike() {
+      if (this.liked != null) {
+        if (this.liked.find((like) => like.id === this.item.id)) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    },
   },
 
   methods: {
     getGenreId(id) {
-      const genre = this.getTvGenres.find((item) => {
+      return this.getTvGenres.find((item) => {
         return item.id === id;
       });
-      return genre.name;
     },
 
     addStorage(item) {
@@ -88,7 +103,7 @@ export default {
         poster_path: item.poster_path,
         name: item.name,
         vote_average: item.vote_average,
-        first_air_date: item.first_air_date.substring(0, 4),
+        first_air_date: item.first_air_date,
         type: "tv",
       });
       this.$store.commit("like/GET_STORAGE");

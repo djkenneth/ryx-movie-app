@@ -35,27 +35,23 @@
                     rounded
                     x-large
                     class="px-13"
-                    @click="viewMovie(item)"
+                    @click="view(item)"
                     >VIEW MORE</v-btn
                   >
-                  <!-- <v-btn
-                    v-if="
-                      liked.find((like) => like.id === item.id) ? true : false
-                    "
-                    @click="removeStorage(item.id)"
-                    icon
-                    class="rounded-icon-bg-red"
-                  >
-                    <v-icon size="25">mdi-heart</v-icon>
-                  </v-btn>
-                  <v-btn
-                    v-else
-                    @click="addStorage(item)"
-                    icon
-                    class="rounded-icon"
-                  >
-                    <v-icon size="25">mdi-heart-outline</v-icon>
-                  </v-btn> -->
+                  <template v-if="isLike(item.id)">
+                    <v-btn
+                      @click="removeStorage(item.id)"
+                      icon
+                      class="rounded-icon-bg-red"
+                    >
+                      <v-icon size="25">mdi-heart</v-icon>
+                    </v-btn>
+                  </template>
+                  <template v-else>
+                    <v-btn @click="addStorage(item)" icon class="rounded-icon">
+                      <v-icon size="25">mdi-heart-outline</v-icon>
+                    </v-btn>
+                  </template>
                 </div>
               </v-col>
             </v-row>
@@ -120,6 +116,17 @@ export default {
   },
 
   methods: {
+    isLike(id) {
+      if (this.liked != null) {
+        if (this.liked.find((item) => item.id === id)) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    },
+
     addStorage(item) {
       this.$store.dispatch("like/addStorage", {
         id: item.id,
@@ -137,7 +144,7 @@ export default {
       this.$store.commit("like/GET_STORAGE");
     },
 
-    viewMovie(item) {
+    view(item) {
       this.$router.push({
         name: "view-movie",
         params: { title: item.title, id: item.id },

@@ -3,7 +3,7 @@
     <v-container>
       <h1 class="mb-5 heading-secondary grey--text text--lighten-2">Gallery</h1>
     </v-container>
-    <v-row no-gutters>
+    <v-row no-gutters style="height: 380px">
       <v-col cols="3" v-for="(image, i) in images" :key="i">
         <v-img :src="`https://image.tmdb.org/t/p/original${image.file_path}`" />
       </v-col>

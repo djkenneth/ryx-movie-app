@@ -47,7 +47,7 @@
         </v-card-title>
         <v-card-text v-if="hover && item.genre_ids" class="py-0 card-genre">
           <span v-for="(genre, i) in item.genre_ids" :key="i">
-            {{ getGenreId(genre) }}
+            {{ getGenreId(genre).name }}
           </span>
         </v-card-text>
         <v-card-subtitle v-if="item.release_date" class="pt-0">{{
@@ -75,7 +75,6 @@ export default {
     }),
 
     isLike() {
-      // liked.find((like) => like.id === item.id) ? true : false
       if (this.liked != null) {
         if (this.liked.find((like) => like.id === this.item.id)) {
           return true;
@@ -89,10 +88,9 @@ export default {
 
   methods: {
     getGenreId(id) {
-      const genre = this.getMovieGenres.find((item) => {
+      return this.getMovieGenres.find((item) => {
         return item.id === id;
       });
-      return genre.name;
     },
 
     addStorage(item) {
@@ -102,7 +100,7 @@ export default {
         poster_path: item.poster_path,
         title: item.title,
         vote_average: item.vote_average,
-        release_date: item.release_date.substring(0, 4),
+        release_date: item.release_date,
         type: "movie",
       });
       this.$store.commit("like/GET_STORAGE");

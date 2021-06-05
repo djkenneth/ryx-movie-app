@@ -56,24 +56,24 @@
             <v-btn light color="cyan accent-2" rounded x-large class="px-7"
               >Watch trailer <v-icon size="30">mdi-menu-right</v-icon></v-btn
             >
-            <!-- <v-btn
-              v-if="
-                liked.find((like) => like.id === getMovieInfo.id) ? true : false
-              "
-              @click="removeStorage(getMovieInfo.id)"
-              icon
-              class="rounded-icon-bg-red white--text"
-            >
-              <v-icon size="25">mdi-heart</v-icon>
-            </v-btn>
-            <v-btn
-              v-else
-              @click="addStorage(getMovieInfo)"
-              icon
-              class="rounded-icon white--text"
-            >
-              <v-icon size="25">mdi-heart-outline</v-icon>
-            </v-btn> -->
+            <template v-if="isLike(getMovieInfo.id)">
+              <v-btn
+                @click="removeStorage(getMovieInfo.id)"
+                icon
+                class="rounded-icon-bg-red white--text"
+              >
+                <v-icon size="25">mdi-heart</v-icon>
+              </v-btn>
+            </template>
+            <template v-else>
+              <v-btn
+                @click="addStorage(getMovieInfo)"
+                icon
+                class="rounded-icon white--text"
+              >
+                <v-icon size="25">mdi-heart-outline</v-icon>
+              </v-btn>
+            </template>
           </v-col>
         </v-row>
       </v-container>
@@ -128,11 +128,14 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import store from "@/store/index.js";
-const Credit = () => import("@/components/card/CardCredit.vue");
+const Credit = () => ({
+  component: import("@/components/card/CardCredit.vue"),
+  timeout: 3000,
+});
 const Gallery = () => import("@/components/card/CardGallery.vue");
 const Review = () => import("@/components/card/CardReview.vue");
-const MovieSideInfo = () => import("@/components/movie/MovieSideInfo.vue");
-const MovieCollection = () => import("@/components/movie/MovieCollection.vue");
+const MovieSideInfo = () => import("@/components/movie/SideInfo.vue");
+const MovieCollection = () => import("@/components/movie/Collection.vue");
 const ShowCase = () => import("@/components/card/ShowCase.vue");
 export default {
   components: {
@@ -162,10 +165,21 @@ export default {
   },
 
   methods: {
+    isLike(id) {
+      if (this.liked != null) {
+        if (this.liked.find((item) => item.id === id)) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    },
+
     addStorage(item) {
       this.$store.dispatch("like/addStorage", {
         id: item.id,
-        genre_ids: item.genres,
+        genre_ids: item.genres.id,
         poster_path: item.poster_path,
         title: item.title,
         vote_average: item.vote_average,

@@ -61,26 +61,24 @@
             <v-btn light color="cyan accent-2" rounded x-large class="px-7"
               >Watch trailer <v-icon size="30">mdi-menu-right</v-icon></v-btn
             >
-            <!-- <v-btn
-              v-if="
-                liked.find((like) => like.id === getTVShowInfo.id)
-                  ? true
-                  : false
-              "
-              @click="removeStorage(getTVShowInfo.id)"
-              icon
-              class="rounded-icon-bg-red white--text"
-            >
-              <v-icon size="25">mdi-heart</v-icon>
-            </v-btn>
-            <v-btn
-              v-else
-              @click="addStorage(getTVShowInfo)"
-              icon
-              class="rounded-icon white--text"
-            >
-              <v-icon size="25">mdi-heart-outline</v-icon>
-            </v-btn> -->
+            <template v-if="isLike(getTVShowInfo.id)">
+              <v-btn
+                @click="removeStorage(getTVShowInfo.id)"
+                icon
+                class="rounded-icon-bg-red white--text"
+              >
+                <v-icon size="25">mdi-heart</v-icon>
+              </v-btn>
+            </template>
+            <template v-else>
+              <v-btn
+                @click="addStorage(getTVShowInfo)"
+                icon
+                class="rounded-icon white--text"
+              >
+                <v-icon size="25">mdi-heart-outline</v-icon>
+              </v-btn>
+            </template>
           </v-col>
         </v-row>
       </v-container>
@@ -135,7 +133,10 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import store from "@/store/index.js";
-const Credit = () => import("@/components/card/CardCredit.vue");
+const Credit = () => ({
+  component: import("@/components/card/CardCredit.vue"),
+  timeout: 3000,
+});
 const TvSideInfo = () => import("@/components/tv/SideInfo.vue");
 const Gallery = () => import("@/components/card/CardGallery.vue");
 const Review = () => import("@/components/card/CardReview.vue");
@@ -170,14 +171,26 @@ export default {
   },
 
   methods: {
+    isLike(id) {
+      if (this.liked != null) {
+        if (this.liked.find((item) => item.id === id)) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    },
+
     addStorage(item) {
       this.$store.dispatch("like/addStorage", {
         id: item.id,
-        genre_ids: item.genres,
+        genre_ids: item.genres.id,
         poster_path: item.poster_path,
-        title: item.title,
+        name: item.name,
         vote_average: item.vote_average,
-        type: "movie",
+        first_air_date: item.first_air_date.substring(0, 4),
+        type: "tv",
       });
       this.$store.commit("like/GET_STORAGE");
     },

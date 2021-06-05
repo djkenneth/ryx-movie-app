@@ -6,7 +6,11 @@
         max-height="350"
         style="filter: blur(3px)"
         gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
-        :src="`https://image.tmdb.org/t/p/original${season.poster_path}`"
+        :src="
+          season.poster_path
+            ? `https://image.tmdb.org/t/p/original${season.poster_path}`
+            : ''
+        "
       >
       </v-img>
     </div>
@@ -19,7 +23,11 @@
         <v-card class="mx-auto" width="250" rounded="xl">
           <v-img
             height="400"
-            :src="`https://image.tmdb.org/t/p/original${season.poster_path}`"
+            :src="
+              season.poster_path
+                ? `https://image.tmdb.org/t/p/original${season.poster_path}`
+                : ''
+            "
           >
           </v-img>
         </v-card>
@@ -32,8 +40,7 @@
           {{ season.name }}
         </div>
         <div class="headline">
-          {{ season.air_date.substring(0, 4) }} |
-          {{ season.episode_count }} Episodes
+          {{ airDate }} | {{ season.episode_count }} Episodes
         </div>
         <div
           v-if="season.overview"
@@ -58,6 +65,17 @@
 export default {
   props: {
     season: Object,
+  },
+
+  computed: {
+    airDate() {
+      if (this.season.air_date) {
+        let d = new Date(this.season.air_date);
+        return d.getFullYear();
+      } else {
+        return "Invalid Date";
+      }
+    },
   },
 };
 </script>
