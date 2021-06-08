@@ -1,6 +1,7 @@
 <template>
   <div class="tv pages">
     <v-carousel
+      v-if="getPopularTvShows"
       height="600"
       cycle
       hide-delimiters
@@ -8,11 +9,11 @@
       show-arrows-on-hover
     >
       <v-carousel-item
-        v-for="(item, i) in getPopularTvShows"
+        v-for="(item, i) in getPopularTvShows.slice(0, 10)"
         :key="i"
         eager
         gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
-        :src="`https://image.tmdb.org/t/p/original${item.backdrop_path}`"
+        :src="imagePath(item.backdrop_path, 'original')"
       >
         <v-carousel-reverse-transition mode="out-in">
           <v-container style="height: 80%">
@@ -61,27 +62,31 @@
     </v-carousel>
     <v-container>
       <ShowCase
+        v-if="getPopularTvShows"
         class="my-13"
         type="tv"
-        :results="getPopularTvShows"
+        :results="getPopularTvShows.slice(0, 15)"
         title="Popular"
       />
       <ShowCase
+        v-if="getAiringTodayTvShows"
         class="my-13"
         type="tv"
-        :results="getAiringTodayTvShows"
+        :results="getAiringTodayTvShows.slice(0, 15)"
         title="Airing Today"
       />
       <ShowCase
+        v-if="getOnTheAirTvShows"
         class="my-13"
         type="tv"
-        :results="getOnTheAirTvShows"
+        :results="getOnTheAirTvShows.slice(0, 15)"
         title="On The Air"
       />
       <ShowCase
+        v-if="getTopRatedTvShows"
         class="my-13"
         type="tv"
-        :results="getTopRatedTvShows"
+        :results="getTopRatedTvShows.slice(0, 15)"
         title="Top Rated"
       />
     </v-container>
@@ -90,6 +95,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import imagePath from "@/utils/imagePath";
 const ShowCase = () => import("@/components/card/ShowCase.vue");
 export default {
   components: { ShowCase },
@@ -97,16 +103,22 @@ export default {
     //
   }),
 
-  // beforeRouteEnter(to, from, next) {
-  //   next((vm) => {
-  //     vm.$store.dispatch("tv/fetchCategory", "popular");
-  //     vm.$store.dispatch("tv/fetchCategory", "airing_today");
-  //     vm.$store.dispatch("tv/fetchCategory", "on_the_air");
-  //     vm.$store.dispatch("tv/fetchCategory", "top_rated");
-  //   });
-  // },
+  computed: {
+    ...mapState({
+      liked: (state) => state.like.liked,
+    }),
+
+    ...mapGetters({
+      getPopularTvShows: "tv/getPopularTvShows",
+      getAiringTodayTvShows: "tv/getAiringTodayTvShows",
+      getOnTheAirTvShows: "tv/getOnTheAirTvShows",
+      getTopRatedTvShows: "tv/getTopRatedTvShows",
+    }),
+  },
 
   methods: {
+    imagePath,
+
     isLike(id) {
       if (this.liked != null) {
         if (this.liked.find((item) => item.id === id)) {
@@ -142,19 +154,6 @@ export default {
         params: { name: item.name, id: item.id },
       });
     },
-  },
-
-  computed: {
-    ...mapState({
-      liked: (state) => state.like.liked,
-    }),
-
-    ...mapGetters({
-      getPopularTvShows: "tv/getPopularTvShows",
-      getAiringTodayTvShows: "tv/getAiringTodayTvShows",
-      getOnTheAirTvShows: "tv/getOnTheAirTvShows",
-      getTopRatedTvShows: "tv/getTopRatedTvShows",
-    }),
   },
 
   beforeCreate() {

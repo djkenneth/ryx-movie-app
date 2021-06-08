@@ -1,6 +1,7 @@
 <template>
   <div class="movie pages">
     <v-carousel
+      v-if="getUpcomingMovies"
       height="600"
       cycle
       hide-delimiters
@@ -8,11 +9,11 @@
       show-arrows-on-hover
     >
       <v-carousel-item
-        v-for="(item, i) in getUpcomingMovies"
+        v-for="(item, i) in getUpcomingMovies.slice(0, 10)"
         :key="i"
         eager
         gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
-        :src="`https://image.tmdb.org/t/p/original${item.backdrop_path}`"
+        :src="imagePath(item.backdrop_path, 'original')"
       >
         <v-carousel-reverse-transition mode="out-in">
           <v-container style="height: 80%">
@@ -61,27 +62,31 @@
     </v-carousel>
     <v-container>
       <ShowCase
+        v-if="getPopularMovies"
         class="my-13"
         type="movie"
-        :results="getPopularMovies"
+        :results="getPopularMovies.slice(0, 15)"
         title="Popular"
       />
       <ShowCase
+        v-if="getUpcomingMovies"
         class="my-13"
         type="movie"
-        :results="getUpcomingMovies"
+        :results="getUpcomingMovies.slice(0, 15)"
         title="Upcoming"
       />
       <ShowCase
+        v-if="getNowPlayingMovies"
         class="my-13"
         type="movie"
-        :results="getNowPlayingMovies"
+        :results="getNowPlayingMovies.slice(0, 15)"
         title="Now Playing"
       />
       <ShowCase
+        v-if="getTopRatedMovies"
         class="my-13"
         type="movie"
-        :results="getTopRatedMovies"
+        :results="getTopRatedMovies.slice(0, 15)"
         title="Top Rated"
       />
     </v-container>
@@ -91,6 +96,7 @@
 <script>
 // @ is an alias to /src
 import { mapState, mapGetters } from "vuex";
+import imagePath from "@/utils/imagePath";
 const ShowCase = () => import("@/components/card/ShowCase.vue");
 export default {
   components: { ShowCase },
@@ -101,10 +107,6 @@ export default {
   computed: {
     ...mapState({
       liked: (state) => state.like.liked,
-      popular: (state) => state.movie.popular,
-      upcoming: (state) => state.movie.upcoming,
-      now_playing: (state) => state.movie.now_playing,
-      top_rated: (state) => state.movie.top_rated,
     }),
 
     ...mapGetters({
@@ -116,6 +118,8 @@ export default {
   },
 
   methods: {
+    imagePath,
+
     isLike(id) {
       if (this.liked != null) {
         if (this.liked.find((item) => item.id === id)) {

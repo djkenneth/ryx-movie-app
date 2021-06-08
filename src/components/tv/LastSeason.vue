@@ -6,11 +6,7 @@
         max-height="350"
         style="filter: blur(3px)"
         gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
-        :src="
-          season.poster_path
-            ? `https://image.tmdb.org/t/p/original${season.poster_path}`
-            : ''
-        "
+        :src="imagePath(season.poster_path, 'original')"
       >
       </v-img>
     </div>
@@ -21,14 +17,7 @@
     >
       <v-col cols="3">
         <v-card class="mx-auto" width="250" rounded="xl">
-          <v-img
-            height="400"
-            :src="
-              season.poster_path
-                ? `https://image.tmdb.org/t/p/original${season.poster_path}`
-                : ''
-            "
-          >
+          <v-img height="400" :src="imagePath(season.poster_path, 'original')">
           </v-img>
         </v-card>
       </v-col>
@@ -62,6 +51,7 @@
 </template>
 
 <script>
+import imagePath from "@/utils/imagePath";
 export default {
   props: {
     season: Object,
@@ -77,6 +67,8 @@ export default {
       }
     },
   },
+
+  methods: { imagePath },
 };
 </script>
 

@@ -4,13 +4,7 @@
     <v-row>
       <v-col v-for="(cast, i) in casts" :key="i">
         <v-card dark :width="width" rounded="xl" elevation="10">
-          <v-img
-            :src="
-              cast.profile_path
-                ? `https://image.tmdb.org/t/p/w200${cast.profile_path}`
-                : require('@/assets/no-image-available.jpg')
-            "
-          ></v-img>
+          <v-img :src="imagePath(cast.profile_path, 'w200')"></v-img>
         </v-card>
         <div class="font-weight-bold font-heading name">{{ cast.name }}</div>
         <div class="font-weight-thin font-heading role">
@@ -29,11 +23,13 @@
 </template>
 
 <script>
+import imagePath from "@/utils/imagePath";
 export default {
   props: {
     width: Number,
     casts: Array,
   },
+  methods: { imagePath },
 };
 </script>
 

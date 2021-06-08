@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-img
-      :lazy-src="`https://image.tmdb.org/t/p/original${getTVShowInfo.backdrop_path}`"
+      :lazy-src="imagePath(getTVShowInfo.backdrop_path, 'original')"
       class="white--text align-center"
       gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
       style="height: 95vh"
@@ -12,11 +12,7 @@
             <v-card dark width="230" rounded="xl" class="card-shadow">
               <v-img
                 class="white--text align-end"
-                :src="
-                  getTVShowInfo.poster_path
-                    ? `https://image.tmdb.org/t/p/w200${getTVShowInfo.poster_path}`
-                    : require('@/assets/no-image-available.jpg')
-                "
+                :src="imagePath(getTVShowInfo.poster_path, 'w200')"
                 height="400"
               >
               </v-img>
@@ -97,6 +93,7 @@
             </div>
           </div>
           <Credit
+            v-if="getTVShowInfo.credits.cast"
             class="mb-10"
             :width="150"
             :casts="getTVShowInfo.credits.cast.slice(0, 10)"
@@ -112,7 +109,7 @@
       :images="getTVShowInfo.images.backdrops.slice(0, 8)"
     />
     <Review
-      v-if="getTVShowInfo.reviews.results.length"
+      v-if="getTVShowInfo.reviews.results"
       :reviews="getTVShowInfo.reviews.results.slice(0, 2)"
     />
     <LastSeason
@@ -121,6 +118,7 @@
     />
     <v-container>
       <ShowCase
+        v-if="getTVShowInfo.recommendations.results"
         class="my-10"
         type="tv"
         :results="getTVShowInfo.recommendations.results.slice(0, 10)"
@@ -133,6 +131,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import store from "@/store/index.js";
+import imagePath from "@/utils/imagePath";
 const Credit = () => ({
   component: import("@/components/card/CardCredit.vue"),
   timeout: 3000,
@@ -171,6 +170,8 @@ export default {
   },
 
   methods: {
+    imagePath,
+
     isLike(id) {
       if (this.liked != null) {
         if (this.liked.find((item) => item.id === id)) {

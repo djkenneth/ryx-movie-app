@@ -1,11 +1,7 @@
 <template>
   <div>
     <v-img
-      :lazy-src="
-        getMovieInfo.backdrop_path
-          ? `https://image.tmdb.org/t/p/original${getMovieInfo.backdrop_path}`
-          : ''
-      "
+      :lazy-src="imagePath(getMovieInfo.backdrop_path, 'original')"
       class="white--text align-center"
       gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
       style="height: 95vh"
@@ -13,14 +9,10 @@
       <v-container class="mt-16">
         <v-row no-gutters>
           <v-col cols="3">
-            <v-card dark width="230" rounded="xl" class="card-shadow">
+            <v-card dark width="230" rounded="xl">
               <v-img
                 class="white--text align-end"
-                :src="
-                  getMovieInfo.poster_path
-                    ? `https://image.tmdb.org/t/p/w200${getMovieInfo.poster_path}`
-                    : require('@/assets/no-image-available.jpg')
-                "
+                :src="imagePath(getMovieInfo.poster_path, 'w200')"
                 height="400"
               >
               </v-img>
@@ -92,6 +84,7 @@
             </div>
           </div>
           <Credit
+            v-if="getMovieInfo.credits.cast"
             class="mb-10"
             :width="150"
             :casts="getMovieInfo.credits.cast.slice(0, 10)"
@@ -128,6 +121,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import store from "@/store/index.js";
+import imagePath from "@/utils/imagePath";
 const Credit = () => ({
   component: import("@/components/card/CardCredit.vue"),
   timeout: 3000,
@@ -165,6 +159,8 @@ export default {
   },
 
   methods: {
+    imagePath,
+
     isLike(id) {
       if (this.liked != null) {
         if (this.liked.find((item) => item.id === id)) {

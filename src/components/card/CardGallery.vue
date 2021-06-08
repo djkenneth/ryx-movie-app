@@ -5,7 +5,7 @@
     </v-container>
     <v-row no-gutters style="height: 380px">
       <v-col cols="3" v-for="(image, i) in images" :key="i">
-        <v-img :src="`https://image.tmdb.org/t/p/original${image.file_path}`" />
+        <v-img :src="imagePath(image.file_path, 'original')" />
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -19,10 +19,12 @@
 </template>
 
 <script>
+import imagePath from "@/utils/imagePath";
 export default {
   props: {
     images: Array,
   },
+  methods: { imagePath },
 };
 </script>
 

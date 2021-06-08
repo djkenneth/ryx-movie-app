@@ -1,3 +1,5 @@
+// import colorMatcher from "../../utils/colorMatcher";
+
 export default {
     namespaced: true,
     state: {
@@ -43,6 +45,10 @@ export default {
                     tmdb.data.imdb_votes = imdbVotes;
                     tmdb.data.rated = Rated;
                     tmdb.data.other_rate = Ratings;
+
+                    // let color = await colorMatcher(tmdb.data.backdrop_path);
+                    // tmdb.data.color = color;
+
                     commit("SET_MOVIE_INFO", await tmdb.data)
                 }
             } catch (err) {

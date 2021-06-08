@@ -141,7 +141,7 @@ export default {
     },
   },
 
-  beforeCreate() {
+  created() {
     this.$store.dispatch("getAllGenres", "movie");
     this.$store.dispatch("getAllGenres", "tv");
     this.$store.commit("like/GET_STORAGE");

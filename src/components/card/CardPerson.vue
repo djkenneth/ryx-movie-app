@@ -2,19 +2,11 @@
   <v-hover v-slot="{ hover }">
     <v-card dark width="200" rounded="xl" class="box-shadow">
       <v-img
-        :lazy-src="
-          item.profile_path
-            ? `https://image.tmdb.org/t/p/w200${item.profile_path}`
-            : require('@/assets/no-image-available.jpg')
-        "
+        :lazy-src="imagePath(item.profile_path, 'w200')"
         class="white--text align-end"
         gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
         height="310px"
-        :src="
-          item.profile_path
-            ? `https://image.tmdb.org/t/p/w200${item.profile_path}`
-            : require('@/assets/no-image-available.jpg')
-        "
+        :src="imagePath(item.profile_path, 'w200')"
       >
         <v-card-title :class="hover ? 'py-1' : 'py-4'">
           <h1 class="card-title">{{ item.name }}</h1>
@@ -30,10 +22,12 @@
 </template>
 
 <script>
+import imagePath from "@/utils/imagePath";
 export default {
   props: {
     item: Object,
   },
+  methods: { imagePath },
 };
 </script>
 

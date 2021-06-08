@@ -8,19 +8,11 @@
       @click="viewMovie(item)"
     >
       <v-img
-        :lazy-src="
-          item.poster_path
-            ? `https://image.tmdb.org/t/p/w200${item.poster_path}`
-            : require('@/assets/no-image-available.jpg')
-        "
+        :lazy-src="imagePath(item.poster_path, 'w200')"
         class="white--text align-end"
         gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,.9)"
         height="310px"
-        :src="
-          item.poster_path
-            ? `https://image.tmdb.org/t/p/w200${item.poster_path}`
-            : require('@/assets/no-image-available.jpg')
-        "
+        :src="imagePath(item.poster_path, 'w200')"
       >
         <template v-if="isLike">
           <v-btn
@@ -60,7 +52,7 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
-
+import imagePath from "@/utils/imagePath";
 export default {
   props: {
     item: Object,
@@ -87,6 +79,8 @@ export default {
   },
 
   methods: {
+    imagePath,
+
     getGenreId(id) {
       return this.getMovieGenres.find((item) => {
         return item.id === id;

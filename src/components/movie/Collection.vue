@@ -1,12 +1,13 @@
 <template>
   <v-row class="my-16">
-    <v-img
-      max-height="400"
-      :src="
+    <!-- 
         collection.backdrop_path
           ? `https://image.tmdb.org/t/p/original${collection.backdrop_path}`
           : ''
-      "
+      -->
+    <v-img
+      max-height="400"
+      :src="imagePath(collection.backdrop_path, 'original')"
     >
       <v-container>
         <v-row align="center" style="height: 400px">
@@ -25,10 +26,12 @@
 </template>
 
 <script>
+import imagePath from "@/utils/imagePath";
 export default {
   props: {
     collection: Object,
   },
+  methods: { imagePath },
 };
 </script>
 

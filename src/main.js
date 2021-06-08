@@ -5,6 +5,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 window.axios = require('axios');
 
+
 import "@/styles/index.scss";
 
 Vue.config.productionTip = false;

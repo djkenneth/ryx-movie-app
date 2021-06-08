@@ -11,11 +11,7 @@
           <img
             alt="user"
             contain
-            :src="
-              creator.profile_path
-                ? `https://image.tmdb.org/t/p/w300${creator.profile_path}`
-                : require('@/assets/no-image-available.jpg')
-            "
+            :src="imagePath(creator.profile_path, 'w200')"
           />
         </v-avatar>
         <span class="ml-3 grey--text text--lighten-1">
@@ -31,10 +27,7 @@
           v-for="(network, i) in getTVShowInfo.networks"
           :key="i"
         >
-          <v-img
-            max-width="80"
-            :src="`https://image.tmdb.org/t/p/w300${network.logo_path}`"
-          />
+          <v-img max-width="80" :src="imagePath(network.logo_path, 'w300')" />
         </div>
       </div>
     </div>
@@ -152,12 +145,14 @@
 
 <script>
 import { mapGetters } from "vuex";
+import imagePath from "@/utils/imagePath";
 export default {
   computed: {
     ...mapGetters({
       getTVShowInfo: "tv/getTVShowInfo",
     }),
   },
+  methods: { imagePath },
 };
 </script>
 
